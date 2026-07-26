@@ -22,7 +22,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/cascadia-mono@5.0.18/index.css">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#8C1A15">
-  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1/src/index.js" defer></script>
 
   <style>
     :root {
@@ -2588,10 +2587,7 @@
       <div class="hdr-brand-en">AL-HADBAA</div>
     </div>
     <div class="hdr-left">
-      <button class="hdr-btn" onclick="openDrawer()" aria-label="سلة الطلبات">
-        <i class="ph-bold ph-shopping-cart-simple"></i>
-        <span class="hdr-dot" id="hdrDot">0</span>
-      </button>
+      <!-- Empty for balance -->
     </div>
   </header>
 
@@ -2630,47 +2626,6 @@
     <!-- سيتم توليد الأقسام هنا ديناميكياً من السحابة -->
   </main>
 
-  <!-- FLOAT BAR -->
-  <button class="fbar" id="fbar" onclick="openDrawer()">
-    <i class="ph-bold ph-shopping-cart-simple" style="font-size:17px"></i>
-    <span class="fb-lbl">عرض السلة</span>
-    <span class="fb-price" id="fbPrice">0 د.ع</span>
-    <span class="fb-cnt" id="fbCnt">0</span>
-  </button>
-
-  <!-- CART DRAWER OVERLAY -->
-  <div class="dov" id="dov" onclick="closeDrawerOv(event)">
-    <div class="drawer">
-      <div class="d-handle"></div>
-      <div class="d-hdr">
-        <div class="d-title"><i class="ph-fill ph-shopping-cart-simple"></i> سلة الطلبات</div>
-        <button class="d-close" onclick="closeDrawer()"><i class="ph-bold ph-x"></i></button>
-      </div>
-      <div class="d-body" id="dBody"></div>
-      <div class="d-foot" id="dFoot" style="display:none">
-        <div class="d-row">
-          <span class="d-row-lbl">عدد الأصناف</span>
-          <span class="d-row-val" id="dCount">—</span>
-        </div>
-        <div class="d-row">
-          <span class="d-row-lbl">الضريبة</span>
-          <span class="d-row-val">مشمولة</span>
-        </div>
-        <div class="d-sep"></div>
-        <div class="d-total">
-          <span class="d-total-lbl">الإجمالي</span>
-          <span class="d-total-val" id="dTotal">0 د.ع</span>
-        </div>
-        <button class="d-checkout" onclick="checkout()">
-          <i class="ph-bold ph-check-circle"></i> تأكيد الطلب
-        </button>
-        <button class="d-clear" onclick="clearCart()">
-          <i class="ph-bold ph-trash-simple"></i> مسح السلة
-        </button>
-      </div>
-    </div>
-  </div>
-
   <!-- ITEM MODAL -->
   <div class="mov" id="mov" onclick="closeModalOv(event)">
     <div class="modal">
@@ -2682,118 +2637,7 @@
           <div class="m-price" id="mPrice"></div>
         </div>
         <div class="m-desc" id="mDesc"></div>
-        <button class="m-add" onclick="addFromModal()">
-          <i class="ph-bold ph-plus-circle"></i> أضف إلى السلة
-        </button>
       </div>
-    </div>
-  </div>
-
-  <!-- PREMIUM ALERT -->
-  <div class="aov" id="aov">
-    <div class="palert" onclick="closeAlert()">
-      <div class="pa-icon"><i class="ph-bold ph-check"></i></div>
-      <div class="pa-content">
-        <div class="pa-title">تم استلام طلبك بنجاح</div>
-        <div class="pa-msg" id="paMsg"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- CONFIRM MODAL -->
-  <div class="cov" id="cov">
-    <div class="cmodal">
-      <div class="cm-icon"><i class="ph-bold ph-trash"></i></div>
-      <div class="cm-title">مسح السلة</div>
-      <div class="cm-msg">هل أنت متأكد أنك تريد مسح السلة بالكامل؟</div>
-      <div class="cm-btns">
-        <button class="cm-btn yes" onclick="confirmClear()">نعم، امسح</button>
-        <button class="cm-btn no" onclick="closeConfirm()">تراجع</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- TOAST -->
-  <div class="toast" id="toast"><i class="ph-fill ph-check-circle"></i><span id="toastTxt"></span></div>
-
-  <!-- CHECKOUT FORM MODAL -->
-  <div class="fov" id="fov" onclick="closeFormOv(event)">
-    <div class="fmodal" id="fmodal-content">
-      <button class="fm-close" onclick="closeForm()"><i class="ph-bold ph-x"></i></button>
-      <div class="fm-title">إكمال الطلب 📝</div>
-      <div class="fm-grp">
-        <label>الفرع</label>
-        <select id="custBranch" onchange="updateBranchInfo(this.value)">
-          <option value="">اختر الفرع...</option>
-          <option value="لحم بعجين ومشاوي">فرع لحم بعجين ومشاوي الحدباء</option>
-          <option value="كص وكبة">فرع كص وكبة الحدباء</option>
-        </select>
-        <div id="branchAddress" class="fm-hint" style="margin-top:8px; display:none;"></div>
-      </div>
-      <div class="fm-grp">
-        <label>المنطقة (بغداد)</label>
-        <select id="custArea">
-          <option value="">اختر منطقتك...</option>
-          <optgroup label="جانب الكرخ">
-            <option value="حي الجامعة">حي الجامعة</option>
-            <option value="المنصور">المنصور</option>
-            <option value="الداوودي">الداوودي</option>
-            <option value="اليرموك">اليرموك</option>
-            <option value="الحارثية">الحارثية</option>
-            <option value="السيدية">السيدية</option>
-            <option value="الدورة">الدورة</option>
-            <option value="اليرموك">اليرموك</option>
-            <option value="العامرية">العامرية</option>
-            <option value="الغزالية">الغزالية</option>
-            <option value="السيديه">السيدية</option>
-            <option value="حي الجهاد">حي الجهاد</option>
-            <option value="البياع">البياع</option>
-            <option value="الاعلام">الاعلام</option>
-            <option value="التراث">التراث</option>
-            <option value="القادسية">القادسية</option>
-          </optgroup>
-          <optgroup label="جانب الرصافة">
-            <option value="الكرادة">الكرادة</option>
-            <option value="الجادرية">الجادرية</option>
-            <option value="زيونة">زيونة</option>
-            <option value="شارع فلسطين">شارع فلسطين</option>
-            <option value="الغدير">الغدير</option>
-            <option value="الأعظمية">الأعظمية</option>
-            <option value="القاهرة">القاهرة</option>
-            <option value="الصليخ">الصليخ</option>
-            <option value="حي البنوك">حي البنوك</option>
-            <option value="الحسينية">الحسينية</option>
-            <option value="الشعب">الشعب</option>
-            <option value="بغداد الجديدة">بغداد الجديدة</option>
-            <option value="الزعفرانية">الزعفرانية</option>
-          </optgroup>
-          <option value="أخرى">منطقة أخرى...</option>
-        </select>
-      </div>
-      <div class="fm-grp">
-        <label>الاسم الكريم</label>
-        <input type="text" id="custName" placeholder="مثال: أحمد عبد الله">
-      </div>
-      <div class="fm-grp">
-        <label>رقم الهاتف</label>
-        <input type="tel" id="custPhone" placeholder="07xxxxxxxxx" dir="ltr" style="text-align:right">
-      </div>
-      <button class="fm-submit" onclick="sendOrder()">
-        <i class="ph-bold ph-whatsapp-logo" style="font-size:22px"></i> إرسال الطلب عبر واتساب
-      </button>
-    </div>
-  </div>
-  <!-- SMART SUGGESTION MODAL -->
-  <div class="sov" id="sov" onclick="closeSmartOv(event)" role="dialog" aria-label="اقتراح ذكي">
-    <div class="smodal">
-      <div class="sm-handle"></div>
-      <div class="sm-hdr">
-        <div class="sm-title" id="smTitle"></div>
-        <button class="sm-close" onclick="closeSmartModal()" aria-label="إغلاق والتخطي"><i
-            class="ph-bold ph-x"></i></button>
-      </div>
-      <div class="sm-copy" id="smCopy"></div>
-      <div class="sm-cards" id="smCards"></div>
     </div>
   </div>
 
@@ -2859,7 +2703,7 @@
       }
 
       // ترتيب الأقسام: حسب حقل order إن وُجد، وإلا حسب الترتيب المفضّل، وإلا في الآخر
-      const CAT_ORDER = ['lahmbajin', 'kebab', 'pizza', 'sides', 'drinks'];
+      const CAT_ORDER = ['lahmbajin', 'kebab', 'pizza', 'kubba', 'sides', 'drinks'];
       const catRank = c => {
         if (typeof c.order === 'number') return c.order;
         const i = CAT_ORDER.indexOf(c.id);
@@ -2958,9 +2802,6 @@
               : `<div class="ic-img-placeholder"><i class="ph-fill ph-fork-knife"></i></div>`
             }
           </div>
-          <button class="ic-add" onclick="event.stopPropagation();${isUnavailable ? '' : `qadd('${item.id}',this)`}" ${isUnavailable ? 'disabled' : ''} aria-label="أضف إلى السلة">
-            <i class="ph-bold ph-plus"></i>
-          </button>
         </div>
       </div>`;
     }
@@ -3010,11 +2851,8 @@
             <div class="fc-tag" style="font-size:10.5px; opacity:.85; text-transform:uppercase; margin-bottom: 4px;">${f.tag}</div>
             <div class="fc-name" style="font-size:16px; font-weight:800; line-height:1.25;">${f.name}</div>
           </div>
-          <div class="fc-foot" style="margin-top:auto; display:flex; justify-content:space-between; align-items:center;">
+          <div class="fc-foot" style="margin-top:auto; display:flex; justify-content:flex-start; align-items:center;">
             <span class="fc-price" style="font-size:13.5px; font-weight:700;">${f.price.toLocaleString()} د.ع</span>
-            <button class="fc-add" onclick="event.stopPropagation();qadd('${f.id}',this)" style="width:26px; height:26px; border-radius:50%;">
-              <i class="ph-bold ph-plus"></i>
-            </button>
           </div>
         </div>`;
       }).join('');
@@ -3133,284 +2971,6 @@
     }
     function closeModal() { document.getElementById('mov').classList.remove('on'); modalItem = null; }
     function closeModalOv(e) { if (e.target === document.getElementById('mov')) closeModal(); }
-    function addFromModal() { if (modalItem) { addToCart(modalItem.id); closeModal(); } }
-
-    /* ── CART ── */
-    function qadd(id, btn) {
-      addToCart(id);
-      if (btn) {
-        btn.style.transform = 'scale(1.55)';
-        setTimeout(() => btn.style.transform = '', 200);
-
-        const rect = btn.getBoundingClientRect();
-        const cartEl = document.getElementById('fbar');
-        const cartRect = cartEl.getBoundingClientRect();
-        const dot = document.createElement('div');
-        dot.className = 'fly-dot';
-        dot.innerHTML = '<i class="ph-bold ph-check"></i>';
-        dot.style.left = rect.left + 'px';
-        dot.style.top = rect.top + 'px';
-        dot.style.setProperty('--dx', (cartRect.left + cartRect.width / 2 - rect.left - 13) + 'px');
-        dot.style.setProperty('--dy', (cartRect.top + cartRect.height / 2 - rect.top - 13) + 'px');
-        document.body.appendChild(dot);
-        setTimeout(() => {
-          dot.remove();
-          if (cartEl.classList.contains('on')) {
-            cartEl.style.transform = 'translateX(-50%) scale(1.1)';
-            setTimeout(() => cartEl.style.transform = '', 200);
-          }
-        }, 600);
-      }
-    }
-
-    function addToCart(id, skipSuggest = false) {
-      const item = getItem(id);
-      if (!item) return;
-      const ex = cart.find(c => c.id === id);
-      if (ex) ex.qty++;
-      else cart.push({ ...item, qty: 1 });
-      updateUI();
-      showToast('تمت إضافة ' + item.name);
-      if (!skipSuggest) triggerSmartSuggestion(item);
-    }
-
-    function removeFromCart(id) {
-      const ex = cart.find(c => c.id === id);
-      if (ex) {
-        if (ex.qty > 1) ex.qty--;
-        else cart = cart.filter(c => c.id !== id);
-      }
-      updateUI();
-    }
-
-    /* ══════════════════════════════
-       SMART ACTIVE SUGGESTIONS
-    ══════════════════════════════ */
-    let smartTriggeredCount = 0;
-    const SMART_COPIES = {
-      kebab: {
-        msg: "برّد على قلبك 🥤 ضيف مشروب غازي بارد مع الكباب اللذيذ!",
-        suggestCat: 'drinks'
-      },
-      lahmbajin: {
-        msg: "ضيف مشروب غازي بارد يكمل طعم لحم بعجين الموصلي! 🥤",
-        suggestCat: 'drinks'
-      },
-      pizza: {
-        msg: "البيتزا ما تكمل بدون مشروب بارد! 🧊 ضيف مشروب غازي!",
-        suggestCat: 'drinks'
-      },
-      sides: {
-        msg: "ضيف مشروب بارد يكمل وجبتك! 🥤",
-        suggestCat: 'drinks'
-      }
-    };
-
-    function triggerSmartSuggestion(addedItem) {
-      if (smartTriggeredCount >= 3) return;
-
-      let catKey = null;
-      for (const k in DB) {
-        if (DB[k].find(i => i.id === addedItem.id)) { catKey = k; break; }
-      }
-      if (!catKey || !SMART_COPIES[catKey]) return;
-
-      const conf = SMART_COPIES[catKey];
-      const targetCat = conf.suggestCat;
-      const suggestions = DB[targetCat] || [];
-      if (!suggestions.length) return;
-
-      const hasSuggestedType = cart.some(cItem => suggestions.some(s => s.id === cItem.id));
-      if (hasSuggestedType) return;
-
-      const topSuggests = suggestions.slice(0, 4);
-
-      document.getElementById('smTitle').innerHTML = 'كمل وجبتك ✨';
-      document.getElementById('smCopy').innerHTML = conf.msg;
-
-      const cardsHtml = topSuggests.map((s, idx) => {
-        return `
-          <div class="sm-card" style="animation-delay:${idx * 0.08}s; min-height: 120px;">
-            <div class="sm-card-body" style="padding:12px; display:flex; flex-direction:column; justify-content:space-between; height:100%;">
-              <div>
-                <div class="sm-card-name" style="font-size:13px; line-height:1.25;">${s.name}</div>
-                <div class="sm-card-price" style="font-size:12px; margin-top:4px;">${s.price.toLocaleString()} د.ع</div>
-              </div>
-              <button class="sm-card-add" onclick="addSmartItem(${s.id})" style="margin-top:8px; padding:6px; font-size:11px;">
-                <i class="ph-bold ph-plus"></i> أضف
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      document.getElementById('smCards').innerHTML = cardsHtml;
-      document.getElementById('sov').classList.add('on');
-      smartTriggeredCount++;
-    }
-
-    function closeSmartModal() { document.getElementById('sov').classList.remove('on'); }
-    function closeSmartOv(e) { if (e.target === document.getElementById('sov')) closeSmartModal(); }
-    function addSmartItem(id) {
-      addToCart(id, true);
-      closeSmartModal();
-    }
-
-
-    function changeQty(id, d) {
-      const ex = cart.find(c => c.id === id);
-      if (!ex) return;
-      ex.qty += d;
-      if (ex.qty <= 0) { removeFromCart(id); return; }
-      updateUI(); renderDrawer();
-    }
-
-    function clearCart() { document.getElementById('cov').classList.add('on'); }
-    function closeConfirm() { document.getElementById('cov').classList.remove('on'); }
-    function confirmClear() { cart = []; updateUI(); renderDrawer(); closeConfirm(); }
-
-    function totalN() { return cart.reduce((s, c) => s + c.qty, 0); }
-    function totalP() { return cart.reduce((s, c) => s + c.price * c.qty, 0); }
-
-    function updateUI() {
-      const n = totalN(), t = totalP();
-      const hd = document.getElementById('hdrDot');
-      const oldN = parseInt(hd.textContent || '0');
-
-      hd.textContent = n; hd.classList.toggle('on', n > 0);
-      const fb = document.getElementById('fbar');
-      fb.classList.toggle('on', n > 0);
-      document.getElementById('fbCnt').textContent = n;
-      document.getElementById('fbPrice').textContent = t.toLocaleString() + ' د.ع';
-
-      if (n > oldN) {
-        hd.classList.remove('cart-pop-anim');
-        void hd.offsetWidth; // trigger reflow to restart animation
-        hd.classList.add('cart-pop-anim');
-      }
-    }
-
-    /* ── DRAWER ── */
-    function openDrawer() { renderDrawer(); document.getElementById('dov').classList.add('on'); }
-    function closeDrawer() { document.getElementById('dov').classList.remove('on'); }
-    function closeDrawerOv(e) { if (e.target === document.getElementById('dov')) closeDrawer(); }
-
-    function renderDrawer() {
-      const body = document.getElementById('dBody');
-      const foot = document.getElementById('dFoot');
-      if (cart.length === 0) {
-        body.innerHTML = `<div class="d-empty">
-          <i class="ph-light ph-shopping-cart-simple"></i>
-          <p>سلتك فارغة</p>
-          <small>أضف أطباقك المفضلة</small>
-        </div>`;
-        foot.style.display = 'none'; return;
-      }
-      foot.style.display = 'block';
-      document.getElementById('dCount').textContent = totalN() + ' صنف';
-      document.getElementById('dTotal').textContent = totalP().toLocaleString() + ' د.ع';
-      body.innerHTML = cart.map((c, i) => {
-        return `<div class="citem" style="animation-delay:${i * 0.05}s">
-          <div class="citem-img"><i class="ph-light ph-fork-knife"></i></div>
-          <div class="citem-info">
-            <div class="citem-name">${c.name}</div>
-            <div class="citem-sub">${(c.price * c.qty).toLocaleString()} د.ع</div>
-            <div class="citem-unit">${c.price.toLocaleString()} د.ع × ${c.qty}</div>
-          </div>
-          <div class="cqty">
-            <button class="qb" onclick="changeQty(${c.id},-1)"><i class="ph-bold ph-minus"></i></button>
-            <span class="qn">${c.qty}</span>
-            <button class="qb" onclick="changeQty(${c.id},1)"><i class="ph-bold ph-plus"></i></button>
-          </div>
-          <button class="crem" onclick="removeFromCart(${c.id})"><i class="ph-bold ph-trash-simple"></i></button>
-        </div>`;
-      }).join('');
-    }
-
-    function checkout() {
-      if (cart.length === 0) return;
-      document.getElementById('fov').classList.add('on');
-      closeDrawer();
-    }
-    function closeForm() { document.getElementById('fov').classList.remove('on'); }
-    function closeFormOv(e) { if (e.target === document.getElementById('fov')) closeForm(); }
-
-    function updateBranchInfo(v) {
-      const addressEl = document.getElementById('branchAddress');
-      const branchAddresses = {
-        'لحم بعجين ومشاوي': '📍 فرع لحم بعجين ومشاوي الحدباء | 07707702772',
-        'كص وكبة': '📍 فرع كص وكبة الحدباء | 07721755567'
-      };
-
-      if (branchAddresses[v]) {
-        addressEl.textContent = branchAddresses[v];
-        addressEl.style.display = 'block';
-        addressEl.style.color = 'var(--tan-dk)';
-      } else {
-        addressEl.style.display = 'none';
-      }
-    }
-
-    function sendOrder() {
-      const branch = document.getElementById('custBranch').value;
-      const area = document.getElementById('custArea').value;
-      const name = document.getElementById('custName').value.trim();
-      const phone = document.getElementById('custPhone').value.trim();
-
-      if (!branch) { showToast('يرجى اختيار الفرع!'); return; }
-      if (!area) { showToast('يرجى اختيار المنطقة!'); return; }
-      if (!name) { showToast('يرجى إدخال اسمك!'); return; }
-      if (!phone) { showToast('يرجى إدخال رقم الهاتف!'); return; }
-
-      const branchNumbers = {
-        'لحم بعجين ومشاوي': '9647707702772',
-        'كص وكبة': '9647721755567'
-      };
-
-      const now = new Date();
-      let h = now.getHours(), m = now.getMinutes();
-      const ampm = h >= 12 ? 'م' : 'ص';
-      h = h % 12 || 12;
-      const timeStr = h + ':' + (m < 10 ? '0' + m : m) + ' ' + ampm;
-
-      let msg = `*طلب جديد — مطعم مشاوي ولحم بعجين الحدباء* 🔴\n`;
-      msg += `📍 *الفرع:* ${branch}\n`;
-      msg += `🏙️ *المنطقة:* ${area}\n`;
-      msg += `🙋‍♂️ *من:* ${name}\n`;
-      msg += `📞 *الرقم:* ${phone}\n`;
-      msg += `⏱️ *الوقت:* ${timeStr}\n`;
-      msg += `━━━━━━━━━━━━━━━━━━\n`;
-      cart.forEach(c => {
-        msg += `🔸 *${c.qty}×* ${c.name}\n`;
-        msg += `   (${(c.price * c.qty).toLocaleString()} د.ع)\n`;
-      });
-      msg += `━━━━━━━━━━━━━━━━━━\n`;
-      msg += `💰 *الإجمالي:* ${totalP().toLocaleString()} د.ع\n`;
-
-      const resNumber = branchNumbers[branch];
-      const waUrl = `https://wa.me/${resNumber}?text=${encodeURIComponent(msg)}`;
-      cart = []; updateUI(); renderDrawer(); closeForm();
-      window.open(waUrl, '_blank');
-      setTimeout(() => openAlert(`تم إرسال طلبك بنجاح عبر واتساب.`), 800);
-    }
-
-    let alertTimer;
-    function openAlert(msg) {
-      document.getElementById('paMsg').innerHTML = msg;
-      document.getElementById('aov').classList.add('on');
-      clearTimeout(alertTimer);
-      alertTimer = setTimeout(closeAlert, 3500);
-    }
-    function closeAlert() { document.getElementById('aov').classList.remove('on'); }
-
-    /* ── TOAST ── */
-    function showToast(msg) {
-      const el = document.getElementById('toast');
-      document.getElementById('toastTxt').textContent = msg;
-      el.classList.add('on');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => el.classList.remove('on'), 2300);
-    }
 
     /* ── SWIPE TO CLOSE ── */
     function initSwipe(elId, closeFunc) {
@@ -3455,9 +3015,7 @@
     /* ── INIT ── */
     initFirebase();
     initReveal();
-    initSwipe('dov', closeDrawer);
     initSwipe('mov', closeModal);
-    initSwipe('fov', closeForm);
 
     /* ── CACHE CLEAR & SERVICE WORKER ── */
     async function clearAllCaches() {

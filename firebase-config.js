@@ -31,8 +31,9 @@ const initialData = {
     { id: 'lahmbajin', name: 'لحم بعجين', order: 0 },
     { id: 'kebab', name: 'كباب غنم', order: 1 },
     { id: 'pizza', name: 'بيتزا', order: 2 },
-    { id: 'sides', name: 'أطباق جانبية', order: 3 },
-    { id: 'drinks', name: 'المشروبات', order: 4 }
+    { id: 'kubba', name: 'الكبة', order: 3 },
+    { id: 'sides', name: 'المقبلات', order: 4 },
+    { id: 'drinks', name: 'المشروبات', order: 5 }
   ],
   items: [
     // ── لحم بعجين ──
@@ -54,8 +55,10 @@ const initialData = {
     { id: 304, cat: 'pizza', name: 'بيتزا خضار', desc: 'خضار طازجة متنوعة مع جبن موزاريلا', price: 6000, img: 'food2.jpg' },
     { id: 305, cat: 'pizza', name: 'بيتزا مارغريتا', desc: 'صلصة الطماطم وجبن موزاريلا كلاسيكية', price: 5000, img: 'food3.jpg' },
 
-    // ── أطباق جانبية ──
-    { id: 401, cat: 'sides', name: 'كبة الموصل', desc: 'كبة موصلية أصيلة محشوة باللحم المفروم والبهارات', price: 8000, img: 'food2.jpg' },
+    // ── الكبة ──
+    { id: 401, cat: 'kubba', name: 'كبة الموصل', desc: 'كبة موصلية أصيلة محشوة باللحم المفروم والبهارات', price: 8000, img: 'food2.jpg' },
+
+    // ── المقبلات ──
     { id: 402, cat: 'sides', name: 'ماعون مقبلات', desc: 'تشكيلة مقبلات وطرشي متنوعة', price: 3500, img: 'food1.jpg' },
 
     // ── المشروبات ──
