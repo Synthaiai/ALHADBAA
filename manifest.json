@@ -1,0 +1,9 @@
+{
+  "name": "مطعم مشاوي ولحم بعجين الحدباء",
+  "short_name": "الحدباء",
+  "description": "مطعم مشاوي ولحم بعجين الحدباء — من موصل الحدباء إلى بغداد السلام",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F4E2D6",
+  "theme_color": "#8C1A15"
+}
