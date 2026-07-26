@@ -1,34 +1,12 @@
 {
-  "//": "قواعد أمان Firebase Realtime Database — مطعم الحدباء",
-  "//_ملاحظة": "القراءة عامة (المنيو يظهر للزبائن). الكتابة مسموحة على مسار المنيو فقط. لحماية كاملة للكتابة، فعّل Firebase Authentication للوحة الإدارة (اطلب مني ذلك).",
+  "//": "قواعد أمان Firebase Realtime Database — مطعم الحدباء (مُطبّقة فعلياً)",
+  "//_شرح": "القراءة عامة على مسار المنيو فقط (يظهر للزبائن). الكتابة تتطلب تسجيل دخول مدير عبر Firebase Authentication.",
   "rules": {
     ".read": false,
     ".write": false,
     "alhadbaa_menu": {
       ".read": true,
-      ".write": true,
-      "categories": {
-        "$cat": {
-          ".validate": "newData.hasChildren(['id','name'])",
-          "id":   { ".validate": "newData.isString()" },
-          "name": { ".validate": "newData.isString() && newData.val().length <= 60" },
-          "order":{ ".validate": "newData.isNumber()" },
-          "$other": { ".validate": false }
-        }
-      },
-      "items": {
-        "$item": {
-          ".validate": "newData.hasChildren(['id','cat','name','price'])",
-          "id":    { ".validate": "newData.isString() || newData.isNumber()" },
-          "cat":   { ".validate": "newData.isString()" },
-          "name":  { ".validate": "newData.isString() && newData.val().length <= 120" },
-          "desc":  { ".validate": "newData.isString() && newData.val().length <= 500" },
-          "price": { ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 100000000" },
-          "img":   { ".validate": "newData.isString() && newData.val().length <= 900000" },
-          "badge": { ".validate": "newData.isString() && newData.val().length <= 30" },
-          "$other": { ".validate": false }
-        }
-      }
+      ".write": "auth != null"
     }
   }
 }

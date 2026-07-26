@@ -12,6 +12,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
     <style>
         :root {
             --red: #8C1A15;
@@ -298,7 +299,7 @@
         <div class="login-card">
             <i class="ph-bold ph-lock-key"></i>
             <h1>لوحة دخول المحترفين</h1>
-            <p style="color:var(--sub); margin-bottom:20px; font-size:14px;">يرجى إدخال كلمة المرور للمتابعة</p>
+            <p style="color:var(--sub); margin-bottom:20px; font-size:14px;">دخول آمن عبر Firebase — أدخل كلمة المرور</p>
             <input type="password" id="adminPass" placeholder="كلمة المرور">
             <button onclick="checkPass()">دخول</button>
             <p id="error" style="color:#dc2626; margin-top:15px; font-size:14px; display:none; font-weight:700;"></p>
@@ -446,42 +447,33 @@
 
     <script src="firebase-config.js"></script>
     <script>
-        /* ── SHA-256 Password Security ──
-           كلمة المرور مخزّنة كبصمة SHA-256 فقط (غير قابلة للعكس).
-           لتغييرها: احسب SHA-256 لكلمة المرور الجديدة وضعها هنا. */
-        const PASS_HASH = 'ef5b5c8a4b45ddd115a4576865ec577c628029b5e726d0b7cf855b60cbde196b';
-
-        async function sha256(str) {
-            const buf  = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
-            return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
-        }
+        /* ── Firebase Authentication ──
+           تسجيل الدخول عبر حساب المدير في Firebase (آمن).
+           الإيميل ثابت، وكلمة السر مخزّنة ومشفّرة داخل Firebase — غير موجودة بالكود. */
+        const ADMIN_EMAIL = 'admin@alhadbaa.com';
+        let initialized = false;
 
         async function checkPass() {
-            const now      = Date.now();
-            let attempts   = JSON.parse(localStorage.getItem('hadbaaLoginAttempts') || '{"count":0,"time":0}');
+            const pass = document.getElementById('adminPass').value;
+            if (!pass) { showErr('يرجى إدخال كلمة المرور'); return; }
 
-            // Reset counter after 1 hour
-            if (now - attempts.time > 3600000) attempts = { count: 0, time: 0 };
+            const btn = document.querySelector('.login-card button');
+            const orig = btn.innerText;
+            btn.disabled = true;
+            btn.innerText = 'جاري الدخول...';
+            document.getElementById('error').style.display = 'none';
 
-            if (attempts.count >= 3) {
-                const remaining = Math.ceil((3600000 - (now - attempts.time)) / 60000);
-                showErr(`لقد استنفدت المحاولات! حاول بعد ${remaining} دقيقة.`);
-                return;
-            }
-
-            const input = document.getElementById('adminPass').value;
-            const hash  = await sha256(input);
-
-            if (hash === PASS_HASH) {
-                localStorage.removeItem('hadbaaLoginAttempts');
-                document.getElementById('loginOverlay').style.display = 'none';
-                sessionStorage.setItem('adminAuth', 'true');
-                init();
-            } else {
-                attempts.count++;
-                attempts.time = now;
-                localStorage.setItem('hadbaaLoginAttempts', JSON.stringify(attempts));
-                showErr(`كلمة المرور خاطئة! تبقى لك ${3 - attempts.count} محاولة/محاولات.`);
+            try {
+                await firebase.auth().signInWithEmailAndPassword(ADMIN_EMAIL, pass);
+                // onAuthStateChanged يتكفّل بإظهار اللوحة
+            } catch (e) {
+                showErr(e.code === 'auth/too-many-requests'
+                    ? 'محاولات كثيرة، حاول بعد قليل.'
+                    : 'كلمة المرور غير صحيحة');
+                document.getElementById('adminPass').value = '';
+            } finally {
+                btn.disabled = false;
+                btn.innerText = orig;
             }
         }
 
@@ -491,18 +483,23 @@
             err.style.display = 'block';
         }
 
-        // Allow Enter key on password field
+        // السماح بمفتاح Enter
         document.getElementById('adminPass').addEventListener('keydown', e => {
             if (e.key === 'Enter') checkPass();
         });
 
-        if(sessionStorage.getItem('adminAuth') === 'true') {
-            document.getElementById('loginOverlay').style.display = 'none';
-        }
+        // متابعة حالة الدخول (تبقى محفوظة حتى بعد إعادة التحميل)
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('loginOverlay').style.display = 'none';
+                if (!initialized) { initialized = true; init(); }
+            } else {
+                document.getElementById('loginOverlay').style.display = 'flex';
+            }
+        });
 
         function logout() {
-            sessionStorage.removeItem('adminAuth');
-            location.reload();
+            firebase.auth().signOut();
         }
 
         function testFirebase() {
@@ -877,9 +874,6 @@
             }
         }
 
-        if(sessionStorage.getItem('adminAuth') === 'true') {
-            init();
-        }
     </script>
     <div id="toast">
         <i class="ph-bold ph-check-circle"></i>
