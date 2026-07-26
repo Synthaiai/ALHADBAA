@@ -1,3 +1,4 @@
-# رابط مختصر للوحة الإدارة: /admin  →  /admin.html
-/admin    /admin.html    200
-/الادارة  /admin.html    200
+# Cloudflare Pages يخدم admin.html تلقائياً على الرابط النظيف /admin
+# لذلك لا نحتاج قاعدة لـ /admin (كانت تسبب حلقة تحويل).
+# رابط عربي مختصر فقط:
+/الادارة    /admin    301
