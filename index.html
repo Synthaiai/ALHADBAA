@@ -2496,6 +2496,38 @@
       0%, 100% { box-shadow: 0 12px 30px rgba(140, 26, 21, 0.32); }
       50% { box-shadow: 0 12px 30px rgba(140, 26, 21, 0.32), 0 0 0 8px rgba(140, 26, 21, 0.12); }
     }
+
+    /* ══ تابعنا على إنستغرام ══ */
+    .ig-footer {
+      margin-top: 30px;
+      padding: 26px 20px 10px;
+      text-align: center;
+      border-top: 1px solid rgba(140, 26, 21, 0.12);
+    }
+    .ig-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--red);
+      margin-bottom: 14px;
+    }
+    .ig-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 22px;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #8C1A15, #b23a30);
+      color: #fff;
+      font-weight: 800;
+      font-size: 15px;
+      text-decoration: none;
+      box-shadow: 0 8px 22px rgba(140, 26, 21, 0.28);
+      transition: transform .2s, box-shadow .2s;
+      direction: ltr;
+    }
+    .ig-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(140, 26, 21, 0.42); }
+    .ig-btn i { font-size: 22px; }
+    .ig-copy { margin-top: 14px; font-size: 12px; color: var(--sub); }
   </style>
 </head>
 
@@ -2621,6 +2653,16 @@
       <div class="ornament">✦ ✦ ✦</div>
       <div class="sec-h" id="popTitle" style="display:none">الأكثر طلباً</div>
       <div class="grid" id="popG" style="display:none"></div>
+
+      <!-- تابعنا على إنستغرام -->
+      <div class="ig-footer">
+        <div class="ig-title">تابعنا على إنستغرام</div>
+        <a class="ig-btn" href="https://www.instagram.com/restaurant_alhadba/" target="_blank" rel="noopener">
+          <i class="ph-fill ph-instagram-logo"></i>
+          <span>@restaurant_alhadba</span>
+        </a>
+        <div class="ig-copy">مطعم مشاوي ولحم بعجين الحدباء</div>
+      </div>
     </section>
 
     <!-- سيتم توليد الأقسام هنا ديناميكياً من السحابة -->
