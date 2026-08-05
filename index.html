@@ -4,6 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>مطعم مشاوي ولحم بعجين الحدباء — قائمة الطعام</title>
   <meta name="description" content="مطعم مشاوي ولحم بعجين الحدباء — من موصل الحدباء إلى بغداد السلام">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -3059,28 +3062,20 @@
     initReveal();
     initSwipe('mov', closeModal);
 
-    /* ── CACHE CLEAR & SERVICE WORKER ── */
-    async function clearAllCaches() {
-      if ('serviceWorker' in navigator) {
-        const regs = await navigator.serviceWorker.getRegistrations();
-        for (let reg of regs) { await reg.unregister(); }
-      }
-      if ('caches' in window) {
-        const keys = await caches.keys();
-        for (let key of keys) { await caches.delete(key); }
-      }
-      console.log('Caches and SW cleared');
-    }
-
-    // Force clear once if needed (e.g. after a major rebrand)
-    if (!localStorage.getItem('hadbaa_cache_cleared_v1')) {
-      clearAllCaches().then(() => {
-        localStorage.setItem('hadbaa_cache_cleared_v1', 'true');
-        location.reload();
-      });
-    }
-
-    // Service worker disabled for live dynamic reload experience
+    /* ── مسح الكاش وإلغاء أي Service Worker — كل مرة، بدون إعادة تحميل ──
+       يضمن ظهور آخر التحديثات حتى على الشبكات البطيئة (زين/آسيا). */
+    (async function clearStaleCache() {
+      try {
+        if ('serviceWorker' in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (const reg of regs) { await reg.unregister(); }
+        }
+        if ('caches' in window) {
+          const keys = await caches.keys();
+          for (const key of keys) { await caches.delete(key); }
+        }
+      } catch (e) { /* تجاهل */ }
+    })();
   </script>
 </body>
 
