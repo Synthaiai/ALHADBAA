@@ -2704,18 +2704,29 @@
     let CATS = [];
     let DB = {};
 
+    const DB_PATH = 'alhadbaa_menu';
+
     function initFirebase() {
       // 1. INSTANT LOAD: Load local data immediately for zero-wait experience
       if (typeof initialData !== 'undefined') {
         loadFromData(initialData);
       }
 
-      // 2. CLOUD SYNC: Connect to Firebase in the background
+      // 1.5 REST FETCH (robust): طلب HTTPS بسيط يجيب آخر منيو من السحابة.
+      //     يشتغل حتى على نت الرصيد (زين/آسيا) حيث يُخنق اتصال Firebase المباشر.
+      if (typeof firebaseConfig !== 'undefined' && firebaseConfig.databaseURL) {
+        fetch(firebaseConfig.databaseURL + '/' + DB_PATH + '.json?t=' + Date.now(), { cache: 'no-store' })
+          .then(r => r.ok ? r.json() : null)
+          .then(data => { if (data) loadFromData(data); })
+          .catch(() => {});
+      }
+
+      // 2. CLOUD SYNC: Connect to Firebase in the background (realtime updates)
       if (typeof firebase === 'undefined' || typeof firebaseConfig === 'undefined' || firebaseConfig.apiKey === "YOUR_API_KEY") {
         return;
       }
 
-      const dbRef = firebase.database().ref('alhadbaa_menu');
+      const dbRef = firebase.database().ref(DB_PATH);
       
       // Use 'once' first for a fast single fetch to save data/bandwidth
       dbRef.once('value').then(snap => {
