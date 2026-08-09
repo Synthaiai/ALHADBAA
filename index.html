@@ -2902,13 +2902,16 @@
       // featured slider
       document.getElementById('featS').innerHTML = FEAT.map((f, idx) => {
         const it = getItem(f.id);
+        // السعر يُؤخذ من قاعدة البيانات إذا الصنف موجود، وإلا القيمة الثابتة كاحتياط
+        const name  = f.name;
+        const price = (it && typeof it.price === 'number') ? it.price : f.price;
         return `<div class="fc" style="background:${f.col}; padding: 18px 16px; display:flex; flex-direction:column; justify-content:space-between; height: 140px; min-width: 190px;" onclick="openModal('${f.id}')">
           <div>
             <div class="fc-tag" style="font-size:10.5px; opacity:.85; text-transform:uppercase; margin-bottom: 4px;">${f.tag}</div>
-            <div class="fc-name" style="font-size:16px; font-weight:800; line-height:1.25;">${f.name}</div>
+            <div class="fc-name" style="font-size:16px; font-weight:800; line-height:1.25;">${name}</div>
           </div>
           <div class="fc-foot" style="margin-top:auto; display:flex; justify-content:flex-start; align-items:center;">
-            <span class="fc-price" style="font-size:13.5px; font-weight:700;">${f.price.toLocaleString()} د.ع</span>
+            <span class="fc-price" style="font-size:13.5px; font-weight:700;">${price.toLocaleString()} د.ع</span>
           </div>
         </div>`;
       }).join('');
